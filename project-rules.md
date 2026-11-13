@@ -71,3 +71,52 @@
 ### 6.5 Acceptance
 - Toàn bộ test Vitest xanh.
 - Console DevTools không warning; `/people/:id` parse đúng, id sai → 404.
+
+## 7. Sprint 2 Contract — Context Form Engine (Ex 1.6)
+
+### 7.1 Anti-pattern cần loại bỏ
+Chuỗi 5 `useEffect` giữa `InputField` và `SimpleForm` (syncToParent → validateField → calcFormValidity → syncErrorsToChild → autoScrollToError) gây 5 lần re-render cho mỗi phím gõ, race condition và lỗi "Maximum update depth exceeded".
+**Giải pháp:** errors và isValid là *derived state*, được tính đồng bộ trong render bằng một hàm thuần `validateForm()`.
+
+### 7.2 Route
+| Path | Layout | Element |
+|---|---|---|
+| `/form` | `RootLayout` | `SimpleForm` |
+
+Thanh điều hướng chính có thêm `NavLink` "Form".
+
+### 7.3 Data & validation rules
+`values = { fullName, email, age, password, confirmPassword }` (đều là string, khởi tạo rỗng).
+
+| Field | Rule | Message |
+|---|---|---|
+| `fullName` | bắt buộc, ≥ 2 ký tự (sau trim) | `Full name is required` / `Full name must be at least 2 characters` |
+| `email` | bắt buộc, khớp `/^[^\s@]+@[^\s@]+\.[^\s@]+$/` | `Email is required` / `Email is invalid` |
+| `age` | bắt buộc, số nguyên 16–100 | `Age is required` / `Age must be an integer between 16 and 100` |
+| `password` | ≥ 8 ký tự và có ít nhất 1 chữ số | `Password is required` / `Password must be at least 8 characters and contain a number` |
+| `confirmPassword` | trùng `password` (cross-field) | `Please confirm your password` / `Passwords do not match` |
+
+`validateForm(values, rules = FORM_RULES) → { [field]: message }`: hàm thuần, đồng bộ, không side effect.
+
+### 7.4 Component contracts
+- `FormContext.js`
+  - `export const FormContext = createContext(null)`
+  - `export const useFormContext()`: throw Error nếu dùng ngoài Provider.
+- `SimpleForm.jsx`
+  - State: `values`, `touched`, `submitAttempted`, `submittedData`.
+  - `errors = useMemo(() => validateForm(values), [values])`, `isValid = Object.keys(errors).length === 0`.
+  - `<FormContext.Provider value={{ values, errors, touched, submitAttempted, handleChange, handleBlur }}>`.
+  - **0 lần gọi `useEffect`.**
+  - Submit không hợp lệ → `submitAttempted = true` (hiện toàn bộ lỗi). Submit hợp lệ → lưu snapshot (ẩn password, bỏ confirmPassword) và render `<ShowData data={submittedData} />`.
+  - `<form noValidate>` để validation do engine kiểm soát.
+- `InputField.jsx({ name, label, type = 'text', ...props })`
+  - `useId()` gắn `<label htmlFor>` ↔ `<input id>`.
+  - Đọc `value`, `onChange`, `onBlur`, lỗi từ `useFormContext()`.
+  - Chỉ hiện lỗi khi `touched[name] || submitAttempted`.
+  - `aria-invalid={!!error}`, `aria-describedby={error ? `${id}-error` : undefined}`, lỗi nằm trong `<span id={`${id}-error`} role="alert">`.
+- `ShowData.jsx({ data = {} })`
+  - `<dl className="json-inspector">`, mỗi key là `<div className="data-row"><dt>key</dt><dd>{String(val)}</dd></div>`.
+
+### 7.5 Acceptance
+- Toàn bộ test Vitest xanh, gồm cả test tĩnh "zero useEffect" cho `SimpleForm.jsx` và `InputField.jsx`.
+- 1 phím gõ = 1 lần render; không có "Maximum update depth exceeded"; Console không warning.
