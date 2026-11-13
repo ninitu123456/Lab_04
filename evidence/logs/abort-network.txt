@@ -1,0 +1,30 @@
+# /api/messages requests — tools/evidence/capture.mjs — 2026-11-13T08:56:15.345Z
+# Captured with page.on('request' | 'requestfinished' | 'requestfailed').
+# Slow 3G via CDP Network.emulateNetworkConditions {"offline":false,"latency":2000,"downloadThroughput":50000,"uploadThroughput":50000}
+# t = ms since capture start; done = ms when the request settled
+
+#   phase                       t       done    method  result          errorText         url
+1   initial-load                129     130     GET     failed          net::ERR_ABORTED  http://localhost:4000/api/messages/nasa
+2   initial-load                129     132     GET     finished 200    -                 http://localhost:4000/api/messages/nasa
+3   switch-to-esports-tribunal  274     276     GET     finished 200    -                 http://localhost:4000/api/messages/esports-tribunal
+4   switch-to-notNasa           409     412     GET     finished 404    -                 http://localhost:4000/api/messages/notNasa
+5   post-notNasa                528     544     POST    finished 404    -                 http://localhost:4000/api/messages/notNasa
+6   reload-esports-tribunal     695     695     GET     failed          net::ERR_ABORTED  http://localhost:4000/api/messages/esports-tribunal
+7   reload-esports-tribunal     695     698     GET     finished 200    -                 http://localhost:4000/api/messages/esports-tribunal
+8   slow3g-switch-to-nasa       756     2780    GET     finished 200    -                 http://localhost:4000/api/messages/nasa
+9   slow3g-rapid-switch         3242    3709    GET     failed          net::ERR_ABORTED  http://localhost:4000/api/messages/esports-tribunal
+10  slow3g-rapid-switch         3709    4174    GET     failed          net::ERR_ABORTED  http://localhost:4000/api/messages/nasa
+11  slow3g-rapid-switch         4174    4640    GET     failed          net::ERR_ABORTED  http://localhost:4000/api/messages/esports-tribunal
+12  slow3g-rapid-switch         4640    5655    GET     finished 200    -                 http://localhost:4000/api/messages/nasa
+13  post-nasa                   5808    5820    POST    finished 201    -                 http://localhost:4000/api/messages/nasa
+14  post-nasa                   5823    5826    GET     finished 200    -                 http://localhost:4000/api/messages/nasa
+
+## Rapid switch (Slow 3G) click sequence: esports-tribunal → nasa → esports-tribunal → nasa
+requests: 4, aborted (net::ERR_ABORTED): 3, finished: 1
+
+## UI checks during rapid switch
+after click "esports-tribunal": aria-pressed=true, messages of "nasa" visible: none
+after click "nasa": aria-pressed=true, messages of "esports-tribunal" visible: none
+after click "esports-tribunal": aria-pressed=true, messages of "nasa" visible: none
+after click "nasa": aria-pressed=true, messages of "esports-tribunal" visible: none
+final: channel "nasa" rendered, messages of "esports-tribunal" visible: none

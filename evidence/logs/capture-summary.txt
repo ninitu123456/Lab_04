@@ -1,0 +1,23 @@
+# tools/evidence/capture.mjs — 2026-11-13T08:56:18.963Z
+PASS  Ex1 /people/le-hoang-cuong NavLink active — aria-current link = "Lê Hoàng Cường"
+PASS  Ex1 person 404 alert
+PASS  Ex1 Suspense skeleton visible while PersonDetail chunk is delayed
+PASS  Ex1 mobile grid collapses to 1 column — grid-template-columns = "343px"
+PASS  Ex1 PersonDetail.jsx NOT requested on /people
+PASS  Ex1 PersonDetail.jsx requested only after navigating to /people/:id
+PASS  Ex1 production build emits a separate PersonDetail chunk
+PASS  Ex2 empty form shows no errors
+PASS  Ex2 blur Email → "Email is required" only
+PASS  Ex2 empty submit shows 5 errors — 5 alerts
+PASS  Ex2 ShowData hides password and drops confirmPassword
+PASS  Ex3 URL synced to ?channel=esports-tribunal — http://localhost:5173/forum?channel=esports-tribunal
+PASS  Ex3 notNasa load error text — Could not load #notNasa: Unknown forum
+PASS  Ex3 Slow 3G shows "Loading messages…"
+PASS  Ex3 after rapid switch only the last channel is shown
+PASS  Ex3 rapid switch aborted stale requests — 3 of 4 aborted
+PASS  Ex3 console has exactly 1 "[useForumMessages] GET notNasa failed" — 1 line(s)
+PASS  Ex3 console has no AbortError
+PASS  Ex3 console has no "Uncaught (in promise)" / pageerror
+PASS  Server log has GET /api/messages/notNasa 404
+PASS  Server log has POST /api/messages/nasa 201
+PASS  Server log has POST /api/messages/notNasa 404

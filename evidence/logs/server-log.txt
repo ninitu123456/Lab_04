@@ -1,0 +1,26 @@
+
+> server@1.0.0 dev
+> node --watch src/server.js
+
+[server] API listening on http://localhost:4000 (CORS origin: http://localhost:5173)
+GET /api/messages/nasa 200 4ms
+GET /api/messages/nasa 200 1ms
+GET /api/messages/esports-tribunal 200 0ms
+GET /api/messages/nasa 200 1ms
+GET /api/messages/nasa 200 0ms
+GET /api/messages/esports-tribunal 200 1ms
+GET /api/messages/notNasa 404 1ms
+OPTIONS /api/messages/notNasa 204 1ms
+POST /api/messages/notNasa 404 15ms
+GET /api/messages/esports-tribunal 304 1ms
+GET /api/messages/esports-tribunal 200 0ms
+GET /api/messages/nasa 304 0ms
+GET /api/messages/esports-tribunal 304 0ms
+GET /api/messages/nasa 304 1ms
+GET /api/messages/esports-tribunal 200 0ms
+GET /api/messages/nasa 200 0ms
+OPTIONS /api/messages/nasa 204 0ms
+POST /api/messages/nasa 201 1ms
+GET /api/messages/nasa 200 0ms
+GET /api/messages/nasa 200 0ms
+GET /api/messages/nasa 304 0ms

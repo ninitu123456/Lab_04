@@ -1,0 +1,23 @@
+
+> server@1.0.0 test:run
+> vitest run --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Users/LEGION/Desktop/Lab_04/Lab_04/server
+
+ ✓ src/app.test.js > GET /api/messages/:forum > returns seeded messages for an existing forum, oldest first 30ms
+ ✓ src/app.test.js > GET /api/messages/:forum > returns 404 for the intentionally missing notNasa forum 6ms
+ ✓ src/app.test.js > GET /api/messages/:forum > sends CORS headers for the Vite dev origin 3ms
+ ✓ src/app.test.js > POST /api/messages/:forum > creates a message with crypto.randomUUID() and an ISO timestamp 17ms
+ ✓ src/app.test.js > POST /api/messages/:forum > rejects missing or blank fields with 400 5ms
+ ✓ src/app.test.js > POST /api/messages/:forum > rejects non-string or oversized fields with 400 5ms
+ ✓ src/app.test.js > POST /api/messages/:forum > ignores client-supplied id and timestamp (whitelisted payload) 3ms
+ ✓ src/app.test.js > POST /api/messages/:forum > returns 404 when posting to an unknown forum 3ms
+ ✓ src/app.test.js > POST /api/messages/:forum > returns 400 for malformed JSON instead of crashing 3ms
+ ✓ src/app.test.js > fallback handlers > returns a JSON 404 for unknown routes 2ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  15:48:28
+   Duration  445ms (import 67%, tests 26%, transform 6%, worker 2%)
+
