@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config';
 
 const INITIAL_RESULT = { key: null, forumId: null, data: [], error: null };
@@ -11,9 +11,11 @@ async function readErrorMessage(res) {
 }
 
 export function useForumMessages(forumId) {
+  // version tăng sau mỗi POST thành công → đổi requestKey → effect refetch
+  const [version, setVersion] = useState(0);
   // Kết quả settled gần nhất, gắn với key của request đã sinh ra nó
   const [result, setResult] = useState(INITIAL_RESULT);
-  const requestKey = forumId;
+  const requestKey = `${forumId}#${version}`;
 
   useEffect(() => {
     // AbortController instantiation inside the effect
@@ -41,14 +43,35 @@ export function useForumMessages(forumId) {
     };
 
     fetchMessages();
-    // Cleanup: huỷ request đang bay khi forumId đổi hoặc component unmount
+    // Cleanup: huỷ request đang bay khi forumId/version đổi hoặc component unmount
     return () => controller.abort();
   }, [forumId, requestKey]);
 
+  // Integrated POST helper → trigger refetch
+  const postMessage = useCallback(
+    async (payload) => {
+      const res = await fetch(messagesUrl(forumId), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        // Ném lỗi có message rõ ràng — component gọi phải try/catch (không unhandled rejection)
+        throw new Error(await readErrorMessage(res));
+      }
+      const created = await res.json();
+      setVersion((v) => v + 1);
+      return created;
+    },
+    [forumId]
+  );
+
   // Derived state — không có setLoading(true) đồng bộ trong effect
   const loading = result.key !== requestKey;
+  // Giữ data cũ của CÙNG kênh khi đang refetch sau POST (không nhấp nháy rỗng),
+  // nhưng không bao giờ hiện data của kênh KHÁC
   const data = result.forumId === forumId ? result.data : [];
   const error = loading ? null : result.error;
 
-  return { data, loading, error };
+  return { data, loading, error, postMessage };
 }
