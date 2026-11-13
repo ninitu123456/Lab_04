@@ -34,8 +34,28 @@ Mục tiêu: hoàn thành contract `PeopleLayout.jsx` & `PersonDetail.jsx` bằn
 - [x] `/people/:id` hợp lệ hiển thị đúng hồ sơ; id sai hiển thị 404
 - [x] Tab Network thấy chunk `PersonDetail` tải riêng (code-splitting)
 
-## Sprint 2 — Context Form Engine (Ex 1.6)
-_TBD_
+## Sprint 2 — Context-Driven Multi-Field Form Engine & Live `<ShowData />` Inspector
+Mục tiêu: hoàn thành contract `SimpleForm.jsx` & `InputField.jsx` dùng Context, validate đồng bộ **không có `useEffect`**, render `<ShowData />` khi submit hợp lệ.
+
+- [ ] S2-01 Contract form engine & validation rules — `docs`
+- [ ] S2-02 Phân rã task Sprint 2 — `docs`
+- [ ] S2-03 Cài `@testing-library/user-event` — `chore`
+- [ ] S2-04 Fail tests cho `validateForm()` — `test`
+- [ ] S2-05 Hàm validate thuần, đồng bộ — `feat`
+- [ ] S2-06 Fail tests: SimpleForm, InputField, ShowData, route `/form` — `test`
+- [ ] S2-07 `FormContext` + `useFormContext()` — `feat: form context`
+- [ ] S2-08 `InputField` với `useId`, `aria-invalid`, `aria-describedby` — `feat: input field validation`
+- [ ] S2-09 `SimpleForm` với derived errors, zero `useEffect` — `feat`
+- [ ] S2-10 `<ShowData />` JSON inspector khi submit hợp lệ — `feat: inspector output`
+- [ ] S2-11 Route `/form` + NavLink — `feat`
+- [ ] S2-12 CSS form & inspector — `style`
+- [ ] S2-13 Refactor field config array — `refactor`
+- [ ] S2-14 Cập nhật audit & DevTools checkpoint — `docs`
+
+### DevTools checkpoint (Sprint 2)
+- [ ] React DevTools Profiler: 1 phím gõ = 1 lần commit render
+- [ ] Không có "Maximum update depth exceeded"; Console không warning
+- [ ] Screen reader / Accessibility tree: input có `aria-invalid` và `aria-describedby` trỏ đúng lỗi
 
 ## Sprint 3 — useForumMessages + Express REST API (Ex 1.7.1)
 _TBD_
