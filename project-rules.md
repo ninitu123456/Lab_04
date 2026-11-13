@@ -120,3 +120,53 @@ Thanh điều hướng chính có thêm `NavLink` "Form".
 ### 7.5 Acceptance
 - Toàn bộ test Vitest xanh, gồm cả test tĩnh "zero useEffect" cho `SimpleForm.jsx` và `InputField.jsx`.
 - 1 phím gõ = 1 lần render; không có "Maximum update depth exceeded"; Console không warning.
+
+## 8. Sprint 3 Contract — useForumMessages & Express REST API (Ex 1.7.1)
+
+### 8.1 REST API (`server/`, mặc định port 4000)
+| Method | Path | Body | Response |
+|---|---|---|---|
+| `GET` | `/api/messages/:forum` | — | `200 Message[]` (cũ → mới) · `404 { error: 'Unknown forum' }` |
+| `POST` | `/api/messages/:forum` | `{ author, text }` | `201 Message` · `400 { error: 'Missing required fields' }` · `400 { error: 'Invalid payload' }` · `404 { error: 'Unknown forum' }` |
+| bất kỳ | route khác | — | `404 { error: 'Not found' }` |
+
+- `Message = { id: string (crypto.randomUUID()), forum, author, text, timestamp: ISO string }`
+- Forum tồn tại: `nasa`, `esports-tribunal`. **`notNasa` cố ý không tồn tại** → 404, dùng để kiểm chứng đường lỗi full-stack.
+- Validation POST:
+  - `author`: string, 1–50 ký tự sau trim.
+  - `text`: string, 1–500 ký tự sau trim.
+  - Chỉ lấy đúng 2 field này (whitelist), **không** spread `...req.body`. Nhờ vậy client không thể ghi đè `id` hay `timestamp`.
+- Middleware:
+  - `cors({ origin: CLIENT_ORIGIN })`, mặc định `http://localhost:5173`.
+  - `express.json({ limit: '10kb' })`.
+  - Request logger.
+  - 404 handler.
+  - Error handler: JSON hỏng → `400 { error: 'Malformed JSON' }`, lỗi khác → `500`.
+- Config: `PORT`, `CLIENT_ORIGIN` đọc từ `process.env`, không hard-code secret.
+- Storage: store in-memory với API async `hasForum()`, `getMessagesByForum()`, `addMessage()`, mô phỏng Mongoose 8 `async/await` (Homework 2 sẽ thay bằng MongoDB).
+
+### 8.2 Hook contract — `useForumMessages(forumId) → { data, loading, error, postMessage }`
+- Tạo `AbortController` trong effect; cleanup gọi `controller.abort()`.
+- Mọi `setState` được bọc guard `!controller.signal.aborted` trong `try / catch / finally`.
+- Response không phải 2xx → throw và expose `error`. `AbortError` không bao giờ được log hay hiển thị.
+- `loading` / `data` / `error` được **derive** từ kết quả gần nhất, gắn với key `forumId#version`. Nhờ vậy UI không bao giờ hiện tin nhắn của kênh cũ.
+- `postMessage(payload)`: gửi `POST`. Thành công → tăng `version` → refetch. Lỗi → `throw new Error(message)` để component tự xử lý (không để unhandled rejection).
+- API base: `import.meta.env.VITE_API_URL ?? 'http://localhost:4000'`.
+
+### 8.3 UI contract — `ForumPage` tại `/forum`
+- Channel switcher gồm 3 nút `nasa` / `esports-tribunal` / `notNasa`, có `aria-pressed`. Kênh được đồng bộ với `?channel=` qua `useSearchParams()`, mặc định `nasa`.
+- Danh sách tin nhắn: `<dl className="message-list">`, mỗi tin là `<React.Fragment key={msg.id}><dt>author + <time></dt><dd>text</dd></React.Fragment>`.
+- Trạng thái:
+  - Đang tải → `role="status"` "Loading messages…"
+  - Lỗi → `role="alert"`
+  - Rỗng → "No messages yet."
+- Form gửi tin: `author` + `text`, validate đồng bộ (derived). Lỗi từ server hiển thị bằng `role="alert"`.
+
+### 8.4 Acceptance
+- Test của `server/` và `client/` đều xanh.
+- DevTools → Network → **Slow 3G**: bấm đổi kênh liên tục thì request cũ hiện **(canceled)**, UI không bao giờ hiện tin nhắn của kênh trước.
+- Kênh `notNasa`:
+  - UI hiện lỗi 404.
+  - Console có đúng 1 dòng `console.error`.
+  - Server log có dòng `GET /api/messages/notNasa 404`.
+- Không có unhandled promise rejection.
