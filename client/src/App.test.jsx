@@ -38,4 +38,9 @@ describe('App routes (React Router v7)', () => {
     renderApp('/khong-ton-tai');
     expect(screen.getByRole('heading', { level: 1, name: /404/ })).toBeInTheDocument();
   });
+
+  it('renders the context form engine at /form', () => {
+    renderApp('/form');
+    expect(screen.getByRole('heading', { level: 1, name: /form engine/i })).toBeInTheDocument();
+  });
 });
