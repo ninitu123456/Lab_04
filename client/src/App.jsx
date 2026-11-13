@@ -5,6 +5,7 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 import PeopleLayout from './people/PeopleLayout';
 import PeopleIndex from './people/PeopleIndex';
+import PersonDetail from './people/PersonDetail';
 import { people } from './data/people';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="people" element={<PeopleLayout people={people} />}>
           <Route index element={<PeopleIndex />} />
+          <Route path=":id" element={<PersonDetail people={people} />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
