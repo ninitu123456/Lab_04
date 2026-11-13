@@ -41,7 +41,8 @@ afterEach(() => {
 
 function LocationProbe() {
   const { search } = useLocation();
-  return <output data-testid="location">{search}</output>;
+  // <div> thay vì <output>: <output> có implicit role="status" → trùng với "Loading messages…"
+  return <div data-testid="location">{search}</div>;
 }
 
 function renderForum(path = '/forum') {
