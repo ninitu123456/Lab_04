@@ -1,0 +1,1 @@
+export const navClass = ({ isActive }) => (isActive ? 'active-link' : 'link');

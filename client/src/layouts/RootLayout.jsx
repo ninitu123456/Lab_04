@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
-
-const navClass = ({ isActive }) => (isActive ? 'active-link' : 'link');
+import { navClass } from '../utils/navClass';
 
 export default function RootLayout() {
   return (
