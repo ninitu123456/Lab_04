@@ -1,0 +1,13 @@
+{
+  "name": "lab04-evidence",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Playwright script that boots server + client and captures PNG evidence for Lab 04",
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0"
+  }
+}
