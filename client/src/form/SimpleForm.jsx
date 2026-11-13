@@ -1,12 +1,22 @@
 import { useMemo, useState } from 'react';
 import { FormContext } from './FormContext';
 import { InputField } from './InputField';
+import { ShowData } from './ShowData';
 import { INITIAL_VALUES, validateForm } from './validation';
+
+// Snapshot an toàn để hiển thị: ẩn password, bỏ confirmPassword
+const toSubmittedSnapshot = (values) => ({
+  fullName: values.fullName.trim(),
+  email: values.email.trim(),
+  age: Number(values.age),
+  password: '•'.repeat(values.password.length),
+});
 
 export const SimpleForm = () => {
   const [values, setValues] = useState(INITIAL_VALUES);
   const [touched, setTouched] = useState({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [submittedData, setSubmittedData] = useState(null);
 
   // Synchronous derived validation in the render pass — zero effect waterfalls
   const errors = useMemo(() => validateForm(values), [values]);
@@ -25,7 +35,11 @@ export const SimpleForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmitAttempted(true);
-    if (!isValid) return;
+    if (!isValid) {
+      setSubmittedData(null);
+      return;
+    }
+    setSubmittedData(toSubmittedSnapshot(values));
   };
 
   return (
@@ -45,6 +59,8 @@ export const SimpleForm = () => {
           <button type="submit">Submit</button>
         </form>
       </FormContext.Provider>
+
+      {submittedData && <ShowData data={submittedData} />}
     </section>
   );
 };
