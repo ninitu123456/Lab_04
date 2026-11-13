@@ -1,87 +1,40 @@
-:root {
-  --bg: #f7f7f8;
-  --surface: #ffffff;
-  --text: #1c1c1e;
-  --muted: #5f6368;
-  --border: #dcdce0;
-  --accent: #0b5cad;
-  --accent-soft: #e7f0fb;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  line-height: 1.5;
-}
-*, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; }
 
-/* Shell */
-.app-header {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: 0.75rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border);
-}
-.brand { font-weight: 700; }
-.app-header nav { display: flex; gap: 0.5rem; }
-.app-main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
-
-/* NavLink states */
-.link, .active-link {
-  display: block; padding: 0.5rem 0.75rem; border-radius: 6px;
-  color: var(--text); text-decoration: none;
-}
-.link:hover { background: var(--accent-soft); }
-.active-link { background: var(--accent); color: #fff; font-weight: 600; }
-.link:focus-visible, .active-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-/* Ex 1.3.2 — Master-detail CSS Grid */
-.people-frame {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) 2fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-.sidebar {
-  display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem;
+/* Ex 1.6 — Context Form Engine */
+.form-page { display: grid; gap: 1.5rem; max-width: 640px; }
+.form-page h1 { margin: 0; }
+.simple-form {
+  display: grid; gap: 1rem; padding: 1.5rem;
   background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
 }
-.content-area {
-  min-height: 18rem; padding: 1.5rem;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+.field-group { display: grid; gap: 0.35rem; }
+.field-group label { font-weight: 600; }
+.field-group input {
+  font: inherit; padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text);
 }
+.field-group input:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.field-group input[aria-invalid="true"] { border-color: #b3261e; background: #fffafa; }
+.field-error { color: #b3261e; font-size: 0.875rem; }
 
-/* Detail */
-.detail-title {
-  margin: 0 0 1rem; height: 2rem; font-size: 1.5rem; line-height: 2rem;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+.simple-form button {
+  justify-self: start; font: inherit; font-weight: 600;
+  padding: 0.6rem 1.25rem; border: 0; border-radius: 6px;
+  background: var(--accent); color: #fff; cursor: pointer;
 }
-.person-details { display: grid; grid-template-columns: 8rem 1fr; gap: 0.75rem 1rem; margin: 0; }
-.person-details dt, .person-details dd { margin: 0; min-height: 1.5rem; line-height: 1.5rem; }
-.person-details dt { font-weight: 600; color: var(--muted); }
-.person-details dd { overflow-wrap: anywhere; }
+.simple-form button:hover { filter: brightness(1.1); }
+.simple-form button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-.not-found-state { padding: 1rem; border-left: 4px solid #b3261e; background: #fdecea; border-radius: 6px; }
-.placeholder { color: var(--muted); }
-
-.visually-hidden {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+/* Ex 1.6 — <ShowData /> semantic JSON inspector */
+.inspector {
+  padding: 1.25rem 1.5rem; border-radius: 10px;
+  background: #0f172a; color: #e2e8f0;
 }
+.inspector h2 { margin: 0 0 0.75rem; font-size: 1.1rem; color: #fff; }
+.json-inspector { margin: 0; display: grid; gap: 0.4rem; font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+.data-row { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; }
+.data-row dt { margin: 0; color: #7dd3fc; }
+.data-row dd { margin: 0; color: #fde68a; overflow-wrap: anywhere; }
 
 @media (max-width: 720px) {
-  .people-frame { grid-template-columns: 1fr; }
-  .app-header { flex-direction: column; align-items: flex-start; }
+  .data-row { grid-template-columns: 1fr; gap: 0.1rem; }
 }
-
-
-/* Ex 1.2 — Skeleton fallback (khớp kích thước PersonDetail → CLS = 0) */
-.skeleton-row { display: contents; }
-.skeleton-bar {
-  display: block; height: 1.5rem; border-radius: 6px;
-  background: linear-gradient(90deg, #ececef 25%, #f6f6f8 50%, #ececef 75%);
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.2s ease-in-out infinite;
-}
-.skeleton-title { width: 60%; height: 2rem; margin: 0 0 1rem; }
-.skeleton-term { width: 5rem; }
-.skeleton-value { width: 80%; }
-@keyframes skeleton-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-@media (prefers-reduced-motion: reduce) { .skeleton-bar { animation: none; } }
