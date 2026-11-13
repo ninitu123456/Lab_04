@@ -1,0 +1,60 @@
+# Code-splitting evidence — tools/evidence/capture.mjs — 2026-11-13T08:56:07.311Z
+# App.jsx: const PersonDetail = lazy(() => import('./people/PersonDetail'))
+# Vite dev server serves unbundled ESM, so each module is its own request.
+
+## Phase A — full load of http://localhost:5173/people (34 JS requests)
+GET 200 /src/main.jsx
+GET 200 /@vite/client
+GET 200 /node_modules/.vite/deps/react.js?v=a815b649
+GET 200 /@react-refresh
+GET 200 /src/index.css
+GET 200 /node_modules/vite/dist/client/env.mjs
+GET 200 /src/App.jsx
+GET 200 /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=a815b649
+GET 200 /node_modules/.vite/deps/react-PYT6vkka.js?v=a815b649
+GET 200 /node_modules/.vite/deps/react-dom_client.js?v=a815b649
+GET 200 /src/layouts/RootLayout.jsx
+GET 200 /src/pages/Home.jsx
+GET 200 /src/pages/NotFound.jsx
+GET 200 /src/people/PeopleIndex.jsx
+GET 200 /src/pages/About.jsx
+GET 200 /src/forum/ForumPage.jsx
+GET 200 /src/people/PeopleLayout.jsx
+GET 200 /src/data/people.js
+GET 200 /src/people/PersonDetailSkeleton.jsx
+GET 200 /src/form/SimpleForm.jsx
+GET 200 /node_modules/.vite/deps/react-router.js?v=a815b649
+GET 200 /node_modules/.vite/deps/react-dom-ZMGL_rwe.js?v=a815b649
+GET 200 /src/forum/useForumMessages.js
+GET 200 /src/forum/channels.js
+GET 200 /src/utils/navClass.js
+GET 200 /src/forum/MessageList.jsx
+GET 200 /src/people/personFields.js
+GET 200 /src/form/FormContext.js
+GET 200 /src/forum/PostMessageForm.jsx
+GET 200 /src/form/InputField.jsx
+GET 200 /src/form/ShowData.jsx
+GET 200 /src/form/formFields.js
+GET 200 /src/form/validation.js
+GET 200 /src/config.js
+
+PersonDetail.jsx requested in phase A: NO
+
+## Phase B — click NavLink "Nguyễn Văn An" → /people/nguyen-van-an (2 new JS requests)
+GET 200 /src/people/PersonDetail.jsx
+GET 200 /src/people/NotFoundState.jsx
+
+PersonDetail.jsx requested in phase B: YES
+
+## Production build — npx vite build (client/, temporary outDir, exit 0)
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 118 modules transformed.
+rendering chunks...
+computing gzip size...
+<tmp-outDir>/index.html                         0.47 kB │ gzip:  0.32 kB
+<tmp-outDir>/assets/index-CEHqRh6S.css         11.87 kB │ gzip:  3.01 kB
+<tmp-outDir>/assets/PersonDetail-0jfXVFiu.js    0.84 kB │ gzip:  0.46 kB
+<tmp-outDir>/assets/index-BGPeyImA.js         270.14 kB │ gzip: 86.10 kB
+
+✓ built in 137ms

@@ -1,0 +1,64 @@
+
+> client@0.0.0 test:run
+> vitest run --reporter=verbose
+
+
+ RUN  v5.1.0 C:/Users/LEGION/Desktop/Lab_04/Lab_04/client
+
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > returns no errors for a fully valid form 2ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > flags every field as required on the initial empty form 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects a full name shorter than 2 characters after trimming 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects a malformed email 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects age "15" 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects age "101" 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects age "20.5" 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects age "abc" 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > rejects a weak password 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > cross-validates confirmPassword against password 0ms
+ ✓ src/form/validation.test.js > validateForm (synchronous, pure) > does not mutate its input 0ms
+ ✓ src/form/FormContext.test.jsx > FormContext > exposes the provider value through useFormContext() 15ms
+ ✓ src/form/FormContext.test.jsx > FormContext > throws a descriptive error when used outside the provider 5ms
+ ✓ src/form/ShowData.test.jsx > ShowData > renders each key/value pair as <dt>/<dd> inside a semantic <dl> 64ms
+ ✓ src/people/PersonDetailSkeleton.test.jsx > PersonDetailSkeleton > announces the loading state accessibly 47ms
+ ✓ src/people/PersonDetailSkeleton.test.jsx > PersonDetailSkeleton > renders one placeholder row per detail field by default 4ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — GET with AbortController > fetches messages for the forum and derives loading/data/error 92ms
+ ✓ src/people/PeopleLayout.test.jsx > PeopleLayout > renders one NavLink per person pointing to /people/:id 62ms
+ ✓ src/people/PeopleLayout.test.jsx > PeopleLayout > marks the current person link as active 9ms
+ ✓ src/people/PeopleLayout.test.jsx > PeopleLayout > renders child routes through <Outlet /> 5ms
+ ✓ src/people/PersonDetail.test.jsx > PersonDetail > extracts the id with useParams and renders a semantic <dl> 24ms
+ ✓ src/people/PersonDetail.test.jsx > PersonDetail > renders a 404 alert when the id does not exist 30ms
+ ✓ src/form/InputField.test.jsx > InputField > binds <label> and <input> with a useId() generated id 19ms
+ ✓ src/form/InputField.test.jsx > InputField > hides the error until the field is touched 4ms
+ ✓ src/form/InputField.test.jsx > InputField > links a visible error with aria-invalid and aria-describedby once touched 27ms
+ ✓ src/form/InputField.test.jsx > InputField > reveals the error after a submit attempt even if untouched 3ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — GET with AbortController > aborts the in-flight request on channel switch and ignores its late response 76ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — GET with AbortController > aborts on unmount and never logs the AbortError 2ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > shows no errors before the user interacts 29ms
+ ✓ src/form/InputField.test.jsx > InputField > delegates change and blur events to the form context 91ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders the home page at / 56ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders the about page at /about 5ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders the people index at /people 6ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — live channel switcher > shows a loading status while the first request is in flight 80ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — GET with AbortController > exposes a 404 error for the unknown notNasa forum and logs it exactly once 74ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — postMessage helper > POSTs JSON then triggers a refetch of the channel 77ms
+ ✓ src/forum/useForumMessages.test.js > useForumMessages — postMessage helper > throws the server error message so the caller can handle it 78ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — live channel switcher > defaults to nasa and renders messages as <dt>/<dd> pairs in a <dl> 31ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — live channel switcher > switches channel, syncs ?channel= and never shows the previous channel 76ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — live channel switcher > supports deep links through ?channel= 15ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders a person dossier at /people/:id 322ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders a global 404 page for unknown paths 6ms
+ ✓ src/App.test.jsx > App routes (React Router v7) > renders the context form engine at /form 13ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — live channel switcher > shows a 404 alert for the unknown notNasa channel 31ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — post message form > validates synchronously and does not POST an empty message 63ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > validates a field synchronously after it is blurred 329ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > reveals every error when submitting an empty form 74ms
+ ✓ src/forum/ForumPage.test.jsx > ForumPage — post message form > posts a new message, clears the text field and shows it after the refetch 311ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > cross-validates confirm password against password 1053ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > renders the <ShowData /> inspector on valid submit without leaking the password 1006ms
+ ✓ src/form/SimpleForm.test.jsx > SimpleForm (context-driven engine) > contains zero useEffect calls (synchronous derived validation) 1ms
+
+ Test Files  11 passed (11)
+      Tests  51 passed (51)
+   Start at  15:48:29
+   Duration  4.69s (environment 62%, tests 17%, setup 13%, import 6%, transform 1%, worker 1%)
+
