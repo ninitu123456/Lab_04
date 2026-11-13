@@ -10,6 +10,7 @@ export default function RootLayout() {
           <NavLink to="/" end className={navClass}>Home</NavLink>
           <NavLink to="/people" className={navClass}>People</NavLink>
           <NavLink to="/form" className={navClass}>Form</NavLink>
+          <NavLink to="/forum" className={navClass}>Forum</NavLink>
           <NavLink to="/about" className={navClass}>About</NavLink>
         </nav>
       </header>
