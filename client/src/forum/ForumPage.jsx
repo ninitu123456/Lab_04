@@ -2,13 +2,14 @@ import { useSearchParams } from 'react-router';
 import { useForumMessages } from './useForumMessages';
 import { CHANNELS, DEFAULT_CHANNEL } from './channels';
 import MessageList from './MessageList';
+import PostMessageForm from './PostMessageForm';
 
 export default function ForumPage() {
   // Kênh hiện tại sống trên URL (?channel=...) → deep link + nút Back hoạt động
   const [searchParams, setSearchParams] = useSearchParams();
   const channel = searchParams.get('channel') || DEFAULT_CHANNEL;
 
-  const { data, loading, error } = useForumMessages(channel);
+  const { data, loading, error, postMessage } = useForumMessages(channel);
 
   // Hiện list khi đã tải xong, hoặc khi đang refetch CÙNG kênh mà đã có data
   const showList = !error && (!loading || data.length > 0);
@@ -47,6 +48,8 @@ export default function ForumPage() {
         )}
         {showList && <MessageList messages={data} />}
       </div>
+
+      <PostMessageForm channel={channel} onPost={postMessage} />
     </section>
   );
 }
