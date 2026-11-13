@@ -32,8 +32,11 @@ describe('SimpleForm (context-driven engine)', () => {
     await user.tab();
     expect(screen.getByRole('alert')).toHaveTextContent('Email is required');
 
+    // tab() đã đưa focus sang Age rồi blur → Age touched và hiện lỗi đúng contract §7.4,
+    // nên chỉ kiểm tra lỗi của Email biến mất
     await user.type(screen.getByLabelText('Email'), 'tu@example.com');
-    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.queryByText('Email is required')).toBeNull();
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'false');
   });
 
   it('reveals every error when submitting an empty form', async () => {
