@@ -36,3 +36,38 @@
 - HTML ngữ nghĩa (`nav`, `main`, `section`, `dl/dt/dd`); mỗi trang chỉ một landmark `<main>`.
 - Nút chỉ có icon bắt buộc có `aria-label`.
 - Console DevTools không có warning; không có unhandled promise rejection.
+
+## 6. Sprint 1 Contract — Router & Master-Detail (Ex 1.2, 1.3, 1.3.1, 1.3.2)
+
+### 6.1 Route map
+| Path | Layout | Element |
+|---|---|---|
+| `/` | `RootLayout` | `Home` (index) |
+| `/about` | `RootLayout` | `About` |
+| `/people` | `RootLayout > PeopleLayout` | `PeopleIndex` (index) |
+| `/people/:id` | `RootLayout > PeopleLayout` | `PersonDetail` (React.lazy + Suspense) |
+| `*` | `RootLayout` | `NotFound` (404 toàn cục) |
+
+### 6.2 Data contract
+`Person = { id: string (slug), name: string, role: string, team: string, email: string, location: string }`
+
+### 6.3 Component contracts
+- `PeopleLayout({ people = [] })`
+  - `<nav aria-label="People directory">` render một `NavLink` cho mỗi person, `to="/people/:id"`.
+  - `className={({ isActive }) => isActive ? 'active-link' : 'link'}`; link đang active có `aria-current="page"`.
+  - Child route render qua `<Outlet />` bên trong `<section className="content-area">`.
+- `PersonDetail({ people = [] })`
+  - Lấy `id` bằng `useParams()`, tìm bằng `people.find(p => p.id === id)`.
+  - Không tìm thấy → `NotFoundState` có `role="alert"` chứa "404".
+  - Tìm thấy → `<h2>` tên + `<dl className="person-details">` gồm các cặp `<dt>/<dd>`: Name, Role, Team, Email, Location.
+- `PersonDetailSkeleton({ rows = PERSON_FIELDS.length })`
+  - `role="status"`, `aria-busy="true"`, `aria-live="polite"`.
+  - Kích thước khớp `PersonDetail` để CLS = 0.
+
+### 6.4 Layout contract
+- `.people-frame { display: grid; grid-template-columns: minmax(280px, 1fr) 2fr; }`
+- Màn hình dưới 720px chuyển về 1 cột.
+
+### 6.5 Acceptance
+- Toàn bộ test Vitest xanh.
+- Console DevTools không warning; `/people/:id` parse đúng, id sai → 404.
