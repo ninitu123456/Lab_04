@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { FormContext } from './FormContext';
 import { InputField } from './InputField';
 import { ShowData } from './ShowData';
+import { FORM_FIELDS } from './formFields';
 import { INITIAL_VALUES, validateForm } from './validation';
 
 // Snapshot an toàn để hiển thị: ẩn password, bỏ confirmPassword
@@ -51,11 +52,9 @@ export const SimpleForm = () => {
         value={{ values, errors, touched, submitAttempted, handleChange, handleBlur }}
       >
         <form className="simple-form" noValidate onSubmit={handleSubmit}>
-          <InputField name="fullName" label="Full name" autoComplete="name" />
-          <InputField name="email" label="Email" type="email" autoComplete="email" />
-          <InputField name="age" label="Age" inputMode="numeric" />
-          <InputField name="password" label="Password" type="password" autoComplete="new-password" />
-          <InputField name="confirmPassword" label="Confirm password" type="password" autoComplete="new-password" />
+          {FORM_FIELDS.map((field) => (
+            <InputField key={field.name} {...field} />
+          ))}
           <button type="submit">Submit</button>
         </form>
       </FormContext.Provider>
